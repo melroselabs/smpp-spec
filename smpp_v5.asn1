@@ -1,0 +1,224 @@
+-- SMPP v5 ASN.1
+-- Melrose Labs melroselabs.com
+
+SMPP DEFINITIONS ::= BEGIN
+
+-- SMPP Header Definition
+SMPPHeader ::= SEQUENCE {
+    commandLength    INTEGER (0..4294967295),
+    commandId        INTEGER (0..4294967295),
+    commandStatus    INTEGER (0..4294967295),
+    sequenceNumber   INTEGER (0..4294967295)
+}
+
+-- SMPP Body Definition
+SMPPBody ::= CHOICE {
+    bindTransmitter          BindTransmitter,
+    bindReceiver             BindReceiver,
+    bindTransceiver          BindTransceiver,
+    unbind                   Unbind,
+    submitSM                 SubmitSM,
+    deliverSM                DeliverSM,
+    querySM                  QuerySM,
+    cancelSM                 CancelSM,
+    replaceSM                ReplaceSM,
+    enquireLink              EnquireLink,
+    genericNack              GenericNack,
+    bindTransmitterResp      BindTransmitterResp,
+    bindReceiverResp         BindReceiverResp,
+    bindTransceiverResp      BindTransceiverResp,
+    unbindResp               UnbindResp,
+    submitSMResp             SubmitSMResp,
+    deliverSMResp            DeliverSMResp,
+    querySMResp              QuerySMResp,
+    cancelSMResp             CancelSMResp,
+    replaceSMResp            ReplaceSMResp,
+    enquireLinkResp          EnquireLinkResp
+}
+
+-- Bind Transmitter
+BindTransmitter ::= SEQUENCE {
+    systemId                IA5String,
+    password                IA5String,
+    systemType              IA5String,
+    interfaceVersion        INTEGER (0..255),
+    addrTON                 INTEGER (0..255),
+    addrNPI                 INTEGER (0..255),
+    addressRange            IA5String
+}
+
+-- Bind Receiver
+BindReceiver ::= SEQUENCE {
+    systemId                IA5String,
+    password                IA5String,
+    systemType              IA5String,
+    interfaceVersion        INTEGER (0..255),
+    addrTON                 INTEGER (0..255),
+    addrNPI                 INTEGER (0..255),
+    addressRange            IA5String
+}
+
+-- Bind Transceiver
+BindTransceiver ::= SEQUENCE {
+    systemId                IA5String,
+    password                IA5String,
+    systemType              IA5String,
+    interfaceVersion        INTEGER (0..255),
+    addrTON                 INTEGER (0..255),
+    addrNPI                 INTEGER (0..255),
+    addressRange            IA5String
+}
+
+-- Unbind
+Unbind ::= SEQUENCE {
+    -- No parameters
+}
+
+-- Submit SM
+SubmitSM ::= SEQUENCE {
+    serviceType             IA5String,
+    sourceAddrTON           INTEGER (0..255),
+    sourceAddrNPI           INTEGER (0..255),
+    sourceAddr              IA5String,
+    destAddrTON             INTEGER (0..255),
+    destAddrNPI             INTEGER (0..255),
+    destinationAddr         IA5String,
+    esmClass                INTEGER (0..255),
+    protocolId              INTEGER (0..255),
+    priorityFlag            INTEGER (0..255),
+    scheduleDeliveryTime    IA5String,
+    validityPeriod          IA5String,
+    registeredDelivery      INTEGER (0..255),
+    dataCoding              INTEGER (0..255),
+    smDefaultMsgId          INTEGER (0..255),
+    smLength                INTEGER (0..255),
+    shortMessage            OCTET STRING,
+    optionalParameters      SEQUENCE (SIZE (0..MAX)) OF OptionalParameter
+}
+
+-- Deliver SM
+DeliverSM ::= SEQUENCE {
+    serviceType             IA5String,
+    sourceAddrTON           INTEGER (0..255),
+    sourceAddrNPI           INTEGER (0..255),
+    sourceAddr              IA5String,
+    destAddrTON             INTEGER (0..255),
+    destAddrNPI             INTEGER (0..255),
+    destinationAddr         IA5String,
+    esmClass                INTEGER (0..255),
+    protocolId              INTEGER (0..255),
+    priorityFlag            INTEGER (0..255),
+    scheduleDeliveryTime    IA5String,
+    validityPeriod          IA5String,
+    registeredDelivery      INTEGER (0..255),
+    dataCoding              INTEGER (0..255),
+    smDefaultMsgId          INTEGER (0..255),
+    smLength                INTEGER (0..255),
+    shortMessage            OCTET STRING,
+    optionalParameters      SEQUENCE (SIZE (0..MAX)) OF OptionalParameter
+}
+
+-- Query SM
+QuerySM ::= SEQUENCE {
+    messageId               IA5String,
+    sourceAddrTON           INTEGER (0..255),
+    sourceAddrNPI           INTEGER (0..255),
+    sourceAddr              IA5String
+}
+
+-- Cancel SM
+CancelSM ::= SEQUENCE {
+    serviceType             IA5String,
+    messageId               IA5String,
+    sourceAddrTON           INTEGER (0..255),
+    sourceAddrNPI           INTEGER (0..255),
+    sourceAddr              IA5String,
+    destAddrTON             INTEGER (0..255),
+    destAddrNPI             INTEGER (0..255),
+    destinationAddr         IA5String
+}
+
+-- Replace SM
+ReplaceSM ::= SEQUENCE {
+    messageId               IA5String,
+    sourceAddrTON           INTEGER (0..255),
+    sourceAddrNPI           INTEGER (0..255),
+    sourceAddr              IA5String,
+    scheduleDeliveryTime    IA5String,
+    validityPeriod          IA5String,
+    registeredDelivery      INTEGER (0..255),
+    smLength                INTEGER (0..255),
+    shortMessage            OCTET STRING
+}
+
+-- Enquire Link
+EnquireLink ::= SEQUENCE {
+    -- No parameters
+}
+
+-- Generic Nack
+GenericNack ::= SEQUENCE {
+    -- No parameters
+}
+
+-- Bind Transmitter Resp
+BindTransmitterResp ::= SEQUENCE {
+    systemId                IA5String
+}
+
+-- Bind Receiver Resp
+BindReceiverResp ::= SEQUENCE {
+    systemId                IA5String
+}
+
+-- Bind Transceiver Resp
+BindTransceiverResp ::= SEQUENCE {
+    systemId                IA5String
+}
+
+-- Unbind Resp
+UnbindResp ::= SEQUENCE {
+    -- No parameters
+}
+
+-- Submit SM Resp
+SubmitSMResp ::= SEQUENCE {
+    messageId               IA5String
+}
+
+-- Deliver SM Resp
+DeliverSMResp ::= SEQUENCE {
+    messageId               IA5String
+}
+
+-- Query SM Resp
+QuerySMResp ::= SEQUENCE {
+    messageId               IA5String,
+    finalDate               IA5String,
+    messageState            INTEGER (0..255),
+    errorCode               INTEGER (0..255)
+}
+
+-- Cancel SM Resp
+CancelSMResp ::= SEQUENCE {
+    -- No parameters
+}
+
+-- Replace SM Resp
+ReplaceSMResp ::= SEQUENCE {
+    -- No parameters
+}
+
+-- Enquire Link Resp
+EnquireLinkResp ::= SEQUENCE {
+    -- No parameters
+}
+
+-- Optional Parameter
+OptionalParameter ::= SEQUENCE {
+    tag                     INTEGER (0..65535),
+    length                  INTEGER (0..65535),
+    value                   OCTET STRING
+}
+
+END
