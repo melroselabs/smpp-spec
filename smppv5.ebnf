@@ -1,0 +1,118 @@
+; SMPP v5 EBNF Specification
+; Melrose Labs melroselabs.com
+
+smpp_message ::= header body
+
+header ::= command_length command_id command_status sequence_number
+
+command_length ::= UINT4
+command_id ::= UINT4
+command_status ::= UINT4
+sequence_number ::= UINT4
+
+body ::= bind_transmitter_body
+       | bind_receiver_body
+       | bind_transceiver_body
+       | unbind_body
+       | submit_sm_body
+       | deliver_sm_body
+       | query_sm_body
+       | cancel_sm_body
+       | replace_sm_body
+       | enquire_link_body
+       | generic_nack_body
+       | bind_transmitter_resp_body
+       | bind_receiver_resp_body
+       | bind_transceiver_resp_body
+       | unbind_resp_body
+       | submit_sm_resp_body
+       | deliver_sm_resp_body
+       | query_sm_resp_body
+       | cancel_sm_resp_body
+       | replace_sm_resp_body
+       | enquire_link_resp_body
+
+bind_transmitter_body ::= system_id password system_type interface_version addr_ton addr_npi address_range
+
+bind_receiver_body ::= system_id password system_type interface_version addr_ton addr_npi address_range
+
+bind_transceiver_body ::= system_id password system_type interface_version addr_ton addr_npi address_range
+
+unbind_body ::= /* No parameters */
+
+submit_sm_body ::= service_type source_addr_ton source_addr_npi source_addr dest_addr_ton dest_addr_npi destination_addr esm_class protocol_id priority_flag schedule_delivery_time validity_period registered_delivery sm_length short_message optional_parameters
+
+deliver_sm_body ::= service_type source_addr_ton source_addr_npi source_addr dest_addr_ton dest_addr_npi destination_addr esm_class protocol_id priority_flag schedule_delivery_time validity_period registered_delivery sm_length short_message optional_parameters
+
+query_sm_body ::= message_id source_addr_ton source_addr_npi source_addr
+
+cancel_sm_body ::= service_type message_id source_addr_ton source_addr_npi source_addr dest_addr_ton dest_addr_npi destination_addr
+
+replace_sm_body ::= message_id source_addr_ton source_addr_npi source_addr schedule_delivery_time validity_period registered_delivery sm_length short_message
+
+enquire_link_body ::= /* No parameters */
+
+generic_nack_body ::= /* No parameters */
+
+bind_transmitter_resp_body ::= system_id
+
+bind_receiver_resp_body ::= system_id
+
+bind_transceiver_resp_body ::= system_id
+
+unbind_resp_body ::= /* No parameters */
+
+submit_sm_resp_body ::= message_id
+
+deliver_sm_resp_body ::= message_id
+
+query_sm_resp_body ::= message_id final_date message_state error_code
+
+cancel_sm_resp_body ::= /* No parameters */
+
+replace_sm_resp_body ::= /* No parameters */
+
+enquire_link_resp_body ::= /* No parameters */
+
+; Basic Types
+system_id ::= CString
+password ::= CString
+system_type ::= CString
+interface_version ::= UINT1
+addr_ton ::= UINT1
+addr_npi ::= UINT1
+address_range ::= CString
+service_type ::= CString
+source_addr_ton ::= UINT1
+source_addr_npi ::= UINT1
+source_addr ::= CString
+dest_addr_ton ::= UINT1
+dest_addr_npi ::= UINT1
+destination_addr ::= CString
+esm_class ::= UINT1
+protocol_id ::= UINT1
+priority_flag ::= UINT1
+schedule_delivery_time ::= CString
+validity_period ::= CString
+registered_delivery ::= UINT1
+data_coding ::= UINT1
+sm_length ::= UINT1
+short_message ::= OCTETSTRING
+message_id ::= CString
+final_date ::= CString
+message_state ::= UINT1
+error_code ::= UINT1
+
+; Optional Parameters
+optional_parameters ::= *(tag length value)
+
+tag ::= UINT2
+length ::= UINT2
+value ::= OCTETSTRING
+
+; Common Data Types
+UINT1 ::= byte
+UINT2 ::= byte byte
+UINT4 ::= byte byte byte byte
+CString ::= <null-terminated string>
+OCTETSTRING ::= <string of octets>
